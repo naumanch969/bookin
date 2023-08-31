@@ -15,10 +15,10 @@ const hotelSlice = createSlice({
         getHotelsReducer: (state, action) => {
             state.hotels = action.payload
         },
-        getHotelsByCityNameReducer: (state, action) => {
+        countHotelsByCityNameReducer: (state, action) => {
 
         },
-        getHotelsByTypeReducer: (state, action) => {
+        countHotelsByTypeReducer: (state, action) => {
 
         },
         getHotelReducer: (state, action) => {
@@ -44,8 +44,8 @@ export const {
     end,
     error,
     getHotelsReducer,
-    getHotelsByCityNameReducer,
-    getHotelsByTypeReducer,
+    countHotelsByCityNameReducer,
+    countHotelsByTypeReducer,
     getHotelReducer,
     getHotelRoomsReducer,
     createHotelReducer,

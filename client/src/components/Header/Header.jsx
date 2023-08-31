@@ -3,24 +3,17 @@ import { Bed, CalendarMonth, DirectionsCar, Flight, LocalTaxi, Person } from '@m
 import 'react-date-range/dist/styles.css'   // main css file
 import 'react-date-range/dist/theme/default.css'    // theme css file
 import { format } from 'date-fns'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Options from './Options'
 import DateRange from './DateRange'
 import { SearchContext } from '../../context/SearchContext'
-import { AuthContext } from '../../context/SearchContext'
+import { useSelector } from 'react-redux'
 
 const Header = ({ type }) => {
 
-    const [active, setActive] = useState('stays')
-    const [destination, setDestination] = useState('')
-    const [dateRange, setDateRange] = useState([{ startDate: new Date(), endDate: new Date(), key: 'selection' }])
-    const [showDate, setShowDate] = useState(false)
-    const [showOptions, setShowOptions] = useState(false)
-    const [options, setOptions] = useState({ adult: 1, children: 0, room: 1 })
-
+    ////////////////////////////////////// VARIABLES ////////////////////////////////////
     const { dispatch } = useContext(SearchContext)
-    const { user } = useContext(AuthContext)
-
+    const { loggedUser } = useSelector(state => state.user)
     const navigate = useNavigate()
     const items = [
         {
@@ -45,12 +38,23 @@ const Header = ({ type }) => {
         },
     ]
 
+    ////////////////////////////////////// STATES ////////////////////////////////////
+    const [active, setActive] = useState('stays')
+    const [destination, setDestination] = useState('')
+    const [dateRange, setDateRange] = useState([{ startDate: new Date(), endDate: new Date(), key: 'selection' }])
+    const [showDate, setShowDate] = useState(false)
+    const [showOptions, setShowOptions] = useState(false)
+    const [options, setOptions] = useState({ adult: 1, children: 0, room: 1 })
 
+    ////////////////////////////////////// USE EFFECTS ////////////////////////////////////
 
+    ////////////////////////////////////// FUNCTIONS ////////////////////////////////////
     const handleSearch = () => {
         dispatch({ type: 'NEW_SEARCH', payload: { destination, dateRange, options } })
         navigate('/hotels', { state: { destination, dateRange, options } })
     }
+
+
 
     return (
         <div className='bg-blue text-white flex justify-center relative ' >
@@ -60,7 +64,7 @@ const Header = ({ type }) => {
 
                     {
                         items.map((item, index) => (
-                            <div key={index} className={`${active == item.title.toLowerCase() ? 'border-[1px] border-white p-[10px] rounded-[20px] ' : ''} flex items-center gap-[10px] `}>
+                            <div key={index} className={`${active == item.title.toLowerCase() ? 'border-[1px] border-white p-[10px] rounded-[20px] ' : ''} flex items-center gap-[10px] cursor-pointer `}>
                                 <item.icon />
                                 <span>{item.title}</span>
                             </div>
@@ -78,10 +82,7 @@ const Header = ({ type }) => {
                             <h1 className="text-[48px] font-bold ">A lifetime of discounts? It's Genius.</h1>
                             <p className="my-[20px] text-[20px] ">Get rewareded for your travels - unlock insntant savings of 10% or more with a free bookin account </p>
                         </div>
-                        {
-                            !user &&
-                            <button className="bg-light-blue w-max text-white rounded-[4px] font-medium border-none p-[10px] cursor-pointer ">Sing in / Register</button>
-                        }
+                        {!loggedUser && <Link to='/auth/register' className="bg-light-blue w-max text-white rounded-[4px] font-medium border-none p-[10px] cursor-pointer ">Sing in / Register</Link>}
 
                         {/* Search inputs */}
                         <div className="h-[60px] bg-white border-[3px] border-[#febb02] w-full max-w-[1024px] flex justify-around items-center py-[1px] rounded-[5px] absolute bottom-[-25px] ">

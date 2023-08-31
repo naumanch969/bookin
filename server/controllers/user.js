@@ -8,6 +8,7 @@ export const register = async (req, res, next) => {
     try {
 
         const { username, email, password } = req.body
+        if (!username || !email || !password) return next(error(400, 'Make sure to provide all the fields'))
 
         const isEmailExist = await User.findOne({ email })
         if (Boolean(isEmailExist)) return next(error(400, 'Email already registered'))
@@ -44,9 +45,10 @@ export const login = async (req, res, next) => {
         const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
         const { password, ...result } = user._doc
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json({ result: { ...result }, success: true, message: 'Logged In successfully' })
+        res.cookie('access_token', token, { httpOnly: true }).status(200).json({ result: { ...result, token }, success: true, message: 'Logged In successfully' })
 
     } catch (err) {
+        console.log(err)
         next(error(500, `${err.message} - login`))
     }
 }
@@ -122,8 +124,8 @@ export const deleteUser = async (req, res, next) => {
     try {
         const { userId } = req.params
 
-        await User.findByIdAndDelete(userId)
-        res.status(200).json({ success: true, message: 'User deleted successfully' })
+        const result = await User.findByIdAndDelete(userId)
+        res.status(200).json({ result, success: true, message: 'User deleted successfully' })
 
     } catch (err) {
         next(error(500, `${err.message} - deleteUser`))

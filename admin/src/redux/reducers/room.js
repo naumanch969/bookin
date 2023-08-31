@@ -12,22 +12,22 @@ const roomSlice = createSlice({
         start: (state) => { state.isFetching = true; state.error = null },
         end: (state) => { state.isFetching = false; },
         error: (state, action) => { state.isFetching = false; state.error = action.payload },
-        getRooms: (state, action) => {
+        getRoomsReducer: (state, action) => {
             state.rooms = action.payload
         },
-        getRoom: (state, action) => {
+        getRoomReducer: (state, action) => {
             state.currentRoom = action.payload
         },
-        createRoom: (state, action) => {
+        createRoomReducer: (state, action) => {
             state.rooms = [...state.rooms, action.payload]
         },
-        updateRoom: (state, action) => {
+        updateRoomReducer: (state, action) => {
             state.rooms = state.rooms.map(room => room = room._id == action.payload._id ? action.payload : room)
         },
-        updateAvailabilty: (state, action) => {
+        updateAvailabiltyReducer: (state, action) => {
 
         },
-        deleteRoom: (state, action) => {
+        deleteRoomReducer: (state, action) => {
             state.rooms = state.rooms.filter(room => room._id != action.payload._id)
         },
     }

@@ -149,7 +149,7 @@ const Rooms = () => {
 
     return (
         <>
-            {error && <div className="w-full bg-light-red text-center py-[8px] font-medium ">{error}</div>}
+            {error && <div className="w-full bg-light-red text-center py-[8px] font-medium rounded-[4px] ">{error}</div>}
             <div className="flex flex-col gap-[1rem] pb-[2rem]" >
 
                 <div>

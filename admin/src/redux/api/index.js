@@ -13,18 +13,21 @@ API.interceptors.request.use((req) => {
     return req
 })
 
+export const uploadImage = (formData) => API.post('/upload_image', formData)
+export const deleteImage = (filename) => API.post(`/delete_image/${{ filename }}`)
+
 export const register = (userData) => API.post('/user/register', userData)
 export const login = (userData) => API.put('/user/login', userData)
-export const getUsers = () => API.get(`/user/get-all`)
-export const getUser = (userId) => API.get(`/user/get-one/${userId}`)
+export const getUsers = () => API.get(`/user/get/all`)
+export const getUser = (userId) => API.get(`/user/get/single/${userId}`)
 export const getUserStats = () => API.get(`/user/get/stats`)
 export const updateUser = (userId, userData) => API.put(`/user/update/${userId}`, userData)
 export const deleteUser = (userId) => API.delete(`/user/delete/${userId}`)
 
-export const getHotels = () => API.get(`/hotel/all`)
-export const getHotelsByCityName = () => API.get(`/hotel/count/city`)
-export const getHotelsByType = () => API.get(`/hotel/count/type`)
-export const getHotel = (hotelId) => API.get(`/hotel/get/${hotelId}`)
+export const getHotels = () => API.get(`/hotel/get/all`)
+export const countHotelsByCityName = () => API.get(`/hotel/count/city`)
+export const countHotelsByType = () => API.get(`/hotel/count/type`)
+export const getHotel = (hotelId) => API.get(`/hotel/get/single/${hotelId}`)
 export const getHotelRooms = (hotelId) => API.get(`/hotel/room/${hotelId}`)
 export const createHotel = (hotelData) => API.post(`/hotel/create`, hotelData)
 export const updateHotel = (hotelId, hotelData) => API.put(`/hotel/update/${hotelId}`, hotelData)

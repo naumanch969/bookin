@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { createHotel } from '../../redux/actions/hotel'
 import { useEffect, useRef, useState } from 'react'
-import { Clear, UploadFile } from '@mui/icons-material'
+import { Clear, Close, UploadFile } from '@mui/icons-material'
 import FileBase from 'react-file-base64'
 import { useNavigate } from 'react-router-dom'
 import { useStateContext } from '../../contexts/ContextProvider'
 import { getRooms } from '../../redux/actions/room'
+import { Upload } from '../../components'
 
 const NewHotel = () => {
 
@@ -13,21 +14,21 @@ const NewHotel = () => {
   const dispatch = useDispatch()
   const { isFetching } = useSelector(state => state.hotel)
   let { rooms, isFetching: isRoomsFetching } = useSelector(state => state.room)
-  rooms = rooms.map(room => room.title)
   const { currentColor } = useStateContext()
-  const imageRef = useRef(null)
-  const navigate = useNavigate()
+  console.log(rooms)
 
   //////////////////////////////////////// States ////////////////////////////////////////
 
   const initialHotelState = { name: '', city: '', address: '', type: '', distance: '', images: [], rooms: [], title: '', description: '', rating: '', cheapestPrice: '', featured: false }
   const [hotelData, setHotelData] = useState(initialHotelState)
+  const [roomsTitle, setRoomsTitle] = useState(rooms = rooms.map(room => ({ title: room.title, _id: room._id })))
   const [images, setImages] = useState([])
 
   //////////////////////////////////////// UseEffects ////////////////////////////////////////
   useEffect(() => {
-    getRooms()
-  }, [])
+    if (rooms.length == 0)
+      getRooms()
+  }, [rooms])
 
   //////////////////////////////////////// Functions ////////////////////////////////////////
   const handleCreateHotel = (e) => {
@@ -38,29 +39,11 @@ const NewHotel = () => {
     dispatch(createHotel(hotelData))
     // setHotelData(initialHotelState)
   }
-  const handleImageButtonClick = (e) => {
-    e.preventDefault();
-    imageRef.current.querySelector('input[type="file"]').click();
-  }
   const handleChange = (e) => {
     setHotelData({ ...hotelData, [e.target.name]: e.target.value })
   }
-  const handleAddImage = (files) => {
-    let imagesArr = []
-    files.map((img) => {
-      console.log(img)
-      if (images.includes(img)) {
-        console.log('image already exist')
-      }
-      else {
-        imagesArr = imagesArr.concat(img.base64)
-      }
-    })
-    setImages([...images, ...imagesArr])
-  }
-  const removeImage = (e, img) => {
-    e.preventDefault()
-    setImages(images.filter(i => i != img))
+  const handleRoomNumbersChange = (e) => {
+    console.log(e.target.value)
   }
 
   const handleAddRoom = (roomTitle) => {
@@ -92,20 +75,7 @@ const NewHotel = () => {
         <form onSubmit={handleCreateHotel} className="newHotelForm flex flex-wrap gap-[20px] text-dark-gray " >
           {/* image */}
           <div className="newHotelItem w-full flex flex-wrap justify-start md:items-start items-center gap-[1rem] ">
-            {
-              images?.map((img, index) => (
-                <div key={index} className="relative rounded-[8px] overflow-hidden w-[10rem] h-[10rem] p-[8px] flex justify-center items-center  " >
-                  <img src={img} alt="" className="w-full h-full object-cover " />
-                  <button onClick={(e) => removeImage(e, img)} className="absolute top-[5px] right-[5px] text-black   " ><Clear /></button>
-                </div>
-              ))
-            }
-            <div ref={imageRef} id='filebase_image' className="flex justify-center items-center rounded-[8px] h-[10rem] w-[10rem] p-[8px] overflow-hidden bg-gray-300 ">
-              <button onClick={handleImageButtonClick} className="flex  justify-center items-center " >
-                <UploadFile style={{ fontSize: '4rem', color: '#555' }} />
-              </button>
-              <FileBase type="file" multiple onDone={(files) => handleAddImage(files)} />
-            </div>
+            <Upload image={hotelData?.images} isMultiple={true} />
           </div>
           {/* name */}
           <div className="newHotelItem w-[31%] flex flex-col">
@@ -152,24 +122,17 @@ const NewHotel = () => {
             <label className="mb-[10px] text-[16px] font-semibold capitalize " >cheapestPrice</label>
             <input onChange={handleChange} value={hotelData.cheapestPrice} name='cheapestPrice' className="border-[1px] border-dark-gray h-[20px] px-[12px] py-[20px] rounded-[4px] " type="number" placeholder="cheapestPrice" />
           </div>
-          {/* rooms */}
           {/* roomNumbers */}
-          <div className="w-[48%] flex flex-col">
+          <div className="w-full md:w-[31%] flex flex-col ">
             <label className="mb-[10px] text-[16px] font-semibold capitalize " >room numbers</label>
-            <div style={{ outlineColor: currentColor }} className="relative border-[1px] border-dark-gray px-[12px] h-[40px] rounded-[4px] bg-white ">
-              <div className="w-full flex flex-wrap justify-center items-center gap-[8px] ">
-                {rooms.map((roomTitle, index) => (
-                  <RoomNumber key={index} roomTitle={roomTitle} />
-                ))}
-              </div>
-              <div className="absolute top-full  ">
-                {
-                  hotelData.rooms.map((room, index) => (
-                    <span onClick={() => handleAddRoom(room)} key={index} >{room}</span>
-                  ))
-                }
-              </div>
-            </div>
+            <select multiple={true} onChange={handleRoomNumbersChange}  name="roomNumbers" className="border-[1px] border-dark-gray px-[12px] w-full rounded-[6px] " >
+              <option value="">Rooms</option>
+              {
+                roomsTitle.map((roomTitle, index) => (
+                  <option value={roomTitle._id} key={index} >{roomTitle.title}</option>
+                ))
+              }
+            </select>
           </div>
           {/* isAdmin */}
           <div className="w-full md:w-[31%] flex flex-col ">

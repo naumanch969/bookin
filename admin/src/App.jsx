@@ -10,7 +10,7 @@ import { useSelector } from "react-redux"
 const App = () => {
 
   const { screenSize, setScreenSize, activeMenu, setActiveMenu, themeSettings, setThemeSettings, currentColor, currentMode } = useStateContext()
-  const { user } = useSelector(state => state.user)
+  const { loggedUser } = useSelector(state => state.user)
 
   useEffect(() => {
     setScreenSize(window.innerWidth)
@@ -26,7 +26,7 @@ const App = () => {
     >
 
       {
-        user != undefined
+        !loggedUser
           ?
           <Routes>
             <Route path="/auth/login" exact element={<Login />} />
@@ -60,13 +60,16 @@ const App = () => {
               </div>
 
               {/* routes */}
-              <div className="md:px-[3rem] md:pt-[1rem] md:pb-[2rem] px-[1rem] pt-[8px] pb-[1rem]  w-full h-full " >
+              <div className="lg:px-[3rem] md:px-[2rem] md:pt-[1rem] md:pb-[2rem] px-[1rem] pt-[8px] pb-[1rem]  w-full h-full " >
 
                 {themeSettings && <ThemeSettings />}
 
 
                 <Routes>
                   <Route path="/" element={<Navigate to='/ecommerce' />} />
+                  <Route path="/auth/login" element={<Navigate to='/' />} />
+                  <Route path="/auth/register" element={<Navigate to='/' />} />
+
                   <Route path="/ecommerce" element={<Ecommerce />} />
 
                   {/* pages */}

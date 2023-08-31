@@ -3,15 +3,13 @@ import { useLocation } from 'react-router-dom'
 import { format } from 'date-fns'
 import { DateRange } from 'react-date-range'
 import {useFetch} from '../../hooks/useFetch'
+import { getHotels } from '../../redux/actions/hotel'
 
 
 const Search = ({ destination,  dateRange, options, showDate, setDestination,  setDateRange, setOptions, setShowDate, min, setMin, max, setMax }) => {
 
-
-    const { reFetch } = useFetch(`/hotel/all?city=${destination}&min=${min || 0}&max=${max || 999999}`)
-
     const handleSearch = () => {
-        reFetch()
+        dispatch(getHotels(`city=${destination}&min=${min || 0}&max=${max || 999999}`))
     }
 
     return (

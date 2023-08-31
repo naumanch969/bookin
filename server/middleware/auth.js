@@ -3,7 +3,11 @@ import { error } from '../utils/error.js'
 
 export const verifyToken = async (req, res, next) => {
     try {
-        const token = req.headers.authtoken
+        console.log(req)
+        const cookies = req.cookies
+        console.log('cookies', cookies)
+        const token = cookies.access_token
+        console.log(token)
         if (!token) return error(403, 'Token is required')
 
         const decodedData = jwt.verify(token, process.env.JWT_SECRET)

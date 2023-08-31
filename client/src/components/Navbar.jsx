@@ -1,10 +1,11 @@
+import { Avatar } from '@mui/material'
 import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext'
 
 const Navbar = () => {
 
-  const { user } = useContext(AuthContext)
+  const { loggedUser } = useSelector(state => state.user)
 
   return (
     <div className='h-[4rem] bg-blue flex justify-center ' >
@@ -13,13 +14,16 @@ const Navbar = () => {
         <Link to='/' className="font-medium text-[28px] ">book*in</Link>
 
         {
-          user
+          loggedUser
             ?
-            <span>{user.username}</span>
+            <div className="flex justify-center items-center gap-[8px] ">
+              <span className='capitalize' >{loggedUser.username}</span>
+              <Avatar className='capitalize' >{loggedUser.username[0]}</Avatar>
+            </div>
             :
             <div className="flex gap-[20px] ">
-              <button className="p-[5px] px-[10px] rounded-[5px] cursor-pointer bg-white text-blue ">Register</button>
-              <button className="p-[5px] px-[10px] rounded-[5px] cursor-pointer bg-white text-blue ">Login</button>
+              <Link to='/auth/register' className="p-[5px] px-[10px] rounded-[5px] cursor-pointer bg-white text-blue ">Register</Link>
+              <Link to='/auth/login' className="p-[5px] px-[10px] rounded-[5px] cursor-pointer bg-white text-blue ">Login</Link>
             </div>
         }
 

@@ -11,7 +11,7 @@ const Login = () => {
     ///////////////////////////////////////  Variables  /////////////////////////////////////////////
     const dispatch = useDispatch()
     const [userData, setUserData] = useState({ name: '', username: '', email: '', password: '', confirmPassword: '' })
-    const { error } = useSelector(state => state.user)
+    const { loggedUser, isFetching, error } = useSelector(state => state.user)
     const navigate = useNavigate()
     const { currentColor } = useStateContext()
 
@@ -41,17 +41,19 @@ const Login = () => {
             <div style={{ borderWidth: '2px', borderColor: currentColor }} className="flex flex-col gap-[1rem] rounded-[6px] p-[20px] lg:w-[30%] md:w-[40%] sm:w-[70%] w-[90%] bg-white text-dark-gray " >
                 <h2 className="title capitalize text-[24px] font-semibold " >Sign in</h2>
                 <form className="form flex flex-wrap md:flex-row flex-col gap-[1rem] " >
-                    <input onChange={handleChange} type="text" name="email" placeholder="email" style={{ outlineColor: currentColor }} className="input outline-teal flex-1 min-w-full border-[1px] rounded-[4px] border-light-gray500 p-[10px] " />
-                    <input onChange={handleChange} type="password" name="password" placeholder="password" style={{ outlineColor: currentColor }} className="input outline-teal flex-1 min-w-[40%] border-[1px] rounded-[4px] border-light-gray500 p-[10px] " />
+                    <input onChange={handleChange} type="text" name="email" placeholder="email" style={{ outlineColor: currentColor }} className="input outline-teal flex-1 min-w-full border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                    <input onChange={handleChange} type="password" name="password" placeholder="password" style={{ outlineColor: currentColor }} className="input outline-teal flex-1 min-w-[40%] border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
                     <div className="w-full flex justify-start ">
                         <Link to={``} className="my-[6px] text-[14px] underline cursor-pointer " >Forget Password</Link>
                     </div>
                     <div className="flex justify-end w-full " >
-                        <button onClick={handleLogin} style={{ background: currentColor }} className={`w-fit border-none py-[10px] px-[20px] text-white rounded-[2px] cursor-pointer `} >Login</button>
+                        <button onClick={handleLogin} style={{ background: currentColor }} className={`w-fit border-none py-[10px] px-[20px] text-white rounded-[2px] cursor-pointer `} >
+                            {isFetching ? 'Submitting...' : 'Login'}
+                        </button>
                     </div>
                 </form>
-                {error && <p className='text-red-500 ' >something went wrong</p>}
                 <p className='w-full text-center capitalize' >don't have account? <Link to='/auth/register' style={{ color: currentColor }} >Register here</Link> </p>
+                {error && <p className='text-red-500 w-full text-center ' >{error}</p>}
             </div>
 
         </div>

@@ -1,9 +1,14 @@
+import { useDispatch, useSelector } from "react-redux"
 import { image4, image5, image6, image7, image8 } from "../../assets"
 import { useFetch } from "../../hooks/useFetch"
+import { useEffect } from "react"
+import { getHotels } from "../../redux/actions/hotel"
 
 const FeaturedProperties = () => {
 
-    const { loading, error, data } = useFetch('/hotel/all?featured=false&limit=4')
+    const dispatch = useDispatch()
+    const { hotels, isFetching, error } = useSelector(state => state.hotel)
+    const images = [image4, image5, image6, image7, image8]
 
     const properties = [
         {
@@ -36,7 +41,9 @@ const FeaturedProperties = () => {
         },
     ]
 
-    const images = [image4, image5, image6, image7, image8]
+    useEffect(() => {
+        dispatch(getHotels(`featured=${false}&limit=${4}`))
+    }, [])
 
     return (
         <div className="flex flex-col gap-[8px] my-[8px] ">
@@ -45,19 +52,19 @@ const FeaturedProperties = () => {
             <div className='w-full max-w-[1024px] flex justify-between gap-[10px] overflow-hidden ' >
 
                 {
-                    loading
+                    isFetching
                         ?
                         <span>Loading...</span>
                         :
                         <>
                             {
-                                data?.map((item, index) => (
+                                hotels?.map((item, index) => (
                                     <div key={index} className="flex-1 flex flex-col gap-[5px] rounded-[10px] bg-gray-200 ">
                                         <img src={images[index]} alt="" className='w-full h-[15rem] object-cover rounded-t-[10px] ' />
                                         <div className="p-[5px] flex flex-col gap-[4px] ">
                                             <div className='flex flex-col  ' >
-                                                <span className='font-medium text-[18px] ' >{item.name}</span>
-                                                <span className='font-light ' >{item.city} </span>
+                                                <span className='font-medium text-[18px] capitalize ' >{item.name}</span>
+                                                <span className='font-light capitalize ' >{item.city} </span>
                                                 <span className=' ' >Sarting from <span className="font-medium " >${item.cheapestPrice}</span></span>
                                             </div>
                                             {

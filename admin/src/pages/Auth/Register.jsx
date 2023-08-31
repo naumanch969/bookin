@@ -26,8 +26,8 @@ const Register = () => {
     // 1)
     const handleRegister = (e) => {
         e.preventDefault()
-        const { username, email, password, country, city, phone, image } = userData
-        if (!username || !email || !password || !country || !city || !phone || !image)
+        const { username, email, password, country, city, phone } = userData
+        if (!username || !email || !password || !country || !city || !phone)
             return alert('make sure to provide all the fields')
         dispatch(register(userData, navigate))
     }
@@ -53,43 +53,45 @@ const Register = () => {
                 </div>
 
                 <div className="w-full flex justify-center items-center my-[1rem] ">
-                    <div style={{ borderWidth: '2px', borderColor: currentColor }} className="lg:w-[30%] md:w-[40%] sm:w-[70%] w-[90%] flex flex-col gap-[1rem] rounded-[6px] p-[20px] bg-white text-dark-gray " >
+                    <div className="lg:w-[40%] md:w-[45%] sm:w-[70%] w-[90%] flex flex-col gap-[1rem] " >
                         <h2 className="title capitalize text-[24px] font-semibold " >create an account</h2>
-                        <form className="form flex flex-wrap gap-[1rem] " >
-                            {
+                        <div style={{ borderColor: currentColor }} className="w-full flex-col gap-[1rem] border-[2px] rounded-[6px] p-[12px] bg-white shadow-box text-dark-gray " >
+                            <form className="form flex flex-wrap gap-[1rem] " >
+                                {
 
-                                userData.image
-                                    ?
-                                    <div className="w-full flex justify-center items-center ">
-                                        <div key={index} className="relative w-[7rem] h-[7rem] p-[8px] rounded-full flex justify-center items-center  " >
-                                            <img src={userData.image} alt="" className="rounded-full " />
-                                            <button onClick={() => setUserData({ ...userData, image: '' })} className="absolute top-[0px] right-[0px] text-white   " ><Clear /></button>
+                                    userData.image
+                                        ?
+                                        <div className="w-full flex justify-center items-center ">
+                                            <div key={index} className="relative w-[7rem] h-[7rem] p-[8px] rounded-full flex justify-center items-center  " >
+                                                <img src={userData.image} alt="" className="rounded-full " />
+                                                <button onClick={() => setUserData({ ...userData, image: '' })} className="absolute top-[0px] right-[0px] text-white   " ><Clear /></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    :
-                                    <div className="w-full flex justify-center items-center ">
-                                        <div ref={imageRef} id='filebase_image' className="flex justify-center items-center h-[7rem] w-[7rem] p-[8px] rounded-full bg-gray-300 ">
-                                            <button onClick={handleImageButtonClick} className="flex  justify-center items-center " >
-                                                <PersonAdd style={{ fontSize: '4rem', color: '#555' }} />
-                                            </button>
-                                            <FileBase type="file" onDone={(image) => setUserData({ ...userData, image })} />
+                                        :
+                                        <div className="w-full flex justify-center items-center ">
+                                            <div ref={imageRef} id='filebase_image' className="flex justify-center items-center h-[7rem] w-[7rem] p-[8px] rounded-full bg-gray-300 ">
+                                                <button onClick={handleImageButtonClick} className="flex  justify-center items-center " >
+                                                    <PersonAdd style={{ fontSize: '4rem', color: '#555' }} />
+                                                </button>
+                                                <FileBase type="file" onDone={(image) => setUserData({ ...userData, image })} />
+                                            </div>
                                         </div>
-                                    </div>
-                            }
-                            <input onChange={handleChange} name='username' type="text" placeholder="Username" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-light-gray p-[10px] " />
-                            <input onChange={handleChange} name='email' type="email" placeholder="Email" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-light-gray p-[10px] " />
-                            <input onChange={handleChange} name='country' type="text" placeholder="Country" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-light-gray p-[10px] " />
-                            <input onChange={handleChange} name='city' type="text" placeholder="City" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-light-gray p-[10px] " />
-                            <input onChange={handleChange} name='phone' type="number" placeholder="Phone" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-light-gray p-[10px] " />
-                            <input onChange={handleChange} name='password' type="password" placeholder="Password" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-light-gray p-[10px] " />
-                            <div className="flex justify-end w-full " >
-                                <button onClick={handleRegister} style={{ background: currentColor }} className={`w-fit border-none py-[10px] px-[20px] text-white rounded-[2px] cursor-pointer `} >
-                                    {isFetching ? 'Loading...' : 'Register'}
-                                </button>
-                            </div>
-                            {error && <p className='text-red-500 ' >something went wrong</p>}
-                        </form>
-                        <p className='w-full text-center capitalize ' >Already have account? <Link to='/login' style={{ color: currentColor }} > login here</Link> </p>
+                                }
+                                <input onChange={handleChange} name='username' type="text" placeholder="Username" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                                <input onChange={handleChange} name='email' type="email" placeholder="Email" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                                <input onChange={handleChange} name='country' type="text" placeholder="Country" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                                <input onChange={handleChange} name='city' type="text" placeholder="City" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                                <input onChange={handleChange} name='phone' type="number" placeholder="Phone" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                                <input onChange={handleChange} name='password' type="password" placeholder="Password" style={{ outlineColor: currentColor }} className="flex-1 outline-teal border-[1px] rounded-[4px] border-cyan-500 p-[10px] " />
+                                <div className="flex justify-end w-full " >
+                                    <button onClick={handleRegister} style={{ background: currentColor }} className={`w-fit border-none py-[10px] px-[20px] text-white rounded-[2px] cursor-pointer `} >
+                                        {isFetching ? 'Submitting...' : 'Register'}
+                                    </button>
+                                </div>
+                            </form>
+                            <p className='w-full text-center capitalize mt-[1rem] ' >Already have account? <Link to='/login' style={{ color: currentColor }} > login here</Link> </p>
+                            {error && <p className='text-red-500 w-full text-center ' >{error}</p>}
+                        </div>
                     </div>
                 </div>
 

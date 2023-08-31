@@ -2,11 +2,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { BrokenImage } from '@mui/icons-material'
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { DeleteModal } from "../../components";
 import { deleteUser, getUsers } from "../../redux/actions/user";
 import { Link } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { DeleteOutline } from "@mui/icons-material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/ContextProvider";
 import { format } from 'timeago.js'
 import { image0 } from '../../assets'
@@ -18,123 +19,24 @@ const Users = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { currentColor } = useStateContext()
-console.log('users',users)
+
     //////////////////////////////////////// States ////////////////////////////////////////
+    const [currentUserId, setCurrentUserId] = useState('')
+    const [openDeleteModal, setOpenDeleteModal] = useState('')
 
     //////////////////////////////////////// UseEffects ////////////////////////////////////////
     useEffect(() => {
         dispatch(getUsers())
     }, [])
 
+
     //////////////////////////////////////// Functions ////////////////////////////////////////
-    const handleDelete = (id) => {
-        dispatch(deleteUser(id))
-        navigate('/users')
+    const handleDelete = () => {
+        dispatch(deleteUser(currentUserId, navigate))
+        setCurrentUserId('')
+        setOpenDeleteModal(false)
     }
 
-    const fakeUsers = [
-        {
-            _id: 415561,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 125562,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 915563,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 202564,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 928565,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 253564,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 392565,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 294561,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-
-        },
-        {
-            _id: 325262,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-        {
-            _id: 352562,
-            username: 'Joh Ellen',
-            email: 'email@gmail.com',
-            phone: '+92 300 1230909',
-            country: 'Pakistan',
-            city: 'Lahore',
-            image: image0,
-            createdAt: '1 month ago',
-        },
-    ];
 
     const userColumns = [
         { field: '_id', headerName: 'ID', width: 200 },
@@ -156,16 +58,16 @@ console.log('users',users)
         },
         {
             field: "action", headerName: "Action", width: 150, renderCell: (params) => (
-                <>
+                <div className='flex gap-[4px] '>
                     <Link to={`/user/${params.row._id}`}>
                         <button style={{ background: currentColor }} className=" rounded-[8px] py-[4px] px-[10px] text-white cursor-pointer mr-[20px]">
                             View/Edit
                         </button>
                     </Link>
-                    <IconButton style={{ background: '#ff00002e' }} className="bg-light-red " onClick={() => handleDelete(params.row._id)}>
+                    <IconButton style={{ background: '#ff00002e' }} className="bg-light-red " onClick={() => { setOpenDeleteModal(true); setCurrentUserId(params.row._id) }}>
                         <DeleteOutline style={{ color: "red", cursor: "pointer" }} />
                     </IconButton>
-                </>
+                </div >
             ),
         },
     ]
@@ -173,7 +75,9 @@ console.log('users',users)
 
     return (
         <>
-            {error && <div className="w-full bg-light-red text-center py-[8px] font-medium ">{error}</div>}
+            {error && <div className="w-full bg-light-red text-center py-[8px] font-medium rounded-[4px] ">{error}</div>}
+            <DeleteModal open={openDeleteModal} setOpen={setOpenDeleteModal} handleDelete={handleDelete} />
+
             <div className="flex flex-col gap-[1rem] pb-[2rem]" >
 
                 <div className="flex justify-between items-center  " >
@@ -182,10 +86,10 @@ console.log('users',users)
                 </div>
 
                 <DataGrid
-                    rows={fakeUsers}
+                    rows={users}
                     columns={userColumns}
                     initialState={{
-                        pagination: { paginationModel: { page: fakeUsers.length % 10, pageSize: 10 }, },
+                        pagination: { paginationModel: { page: users.length % 10, pageSize: 10 }, },
                     }}
                     getRowId={row => row._id}
                     checkboxSelection

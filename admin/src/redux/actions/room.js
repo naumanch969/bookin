@@ -12,62 +12,62 @@ import {
 import * as api from '../api/index'
 
 export const getRooms = () => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.getRooms()
         dispatch(getRoomsReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const getRoom = (roomId) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.getRoom(roomId)
         dispatch(getRoomReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
-export const createRoom = (hotelId,roomData) => async (dispatch) => {
-    dispatch(start())
+export const createRoom = (hotelId, roomData) => async (dispatch) => {
     try {
-        const { data } = await api.createRoom(hotelId,roomData)
+        dispatch(start())
+        const { data } = await api.createRoom(hotelId, roomData)
         dispatch(createRoomReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const updateRoom = (roomId, roomData) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.updateRoom(roomId, roomData)
         dispatch(updateRoomReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const updateAvailabilty = (roomId) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.updateAvailabilty(roomId)
         dispatch(updateAvailabiltyReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
-export const deleteRoom = () => async (roomId,hotelId) => {
-    dispatch(start())
+export const deleteRoom = () => async (roomId, hotelId) => {
     try {
+        dispatch(start())
         const { data } = await api.deleteRoom(roomId, hotelId)
         dispatch(deleteRoomReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }

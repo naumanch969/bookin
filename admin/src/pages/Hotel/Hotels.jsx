@@ -213,8 +213,9 @@ const Hotels = () => {
     return (
         <div className="flex flex-col gap-[1rem] pb-[2rem]" >
 
-            <div>
+            <div className="flex justify-between items-center  " >
                 <h1 className='text-[40px] font-bold ' >Hotels</h1>
+                <Link to='/hotel/new' style={{ background: currentColor }} className="text-white px-[1rem] py-[8px] rounded-[8px] ">Create</Link>
             </div>
 
             <DataGrid

@@ -5,9 +5,9 @@ const userSchema = Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     image: { type: String, default: '' },
-    country: { type: String, required: true },
-    city: { type: String, required: true },
-    phone: { type: Number, required: true },
+    country: { type: String },
+    city: { type: String },
+    phone: { type: Number },
     isAdmin: { type: Boolean, default: false },
 }, { timestamps: true })
 

@@ -1,17 +1,18 @@
 import express from 'express'
-import { getHotel,getHotelRooms, getHotels, updateHotel, deleteHotel, createHotel, getHotelsByCityName, getHotelsByType } from '../controllers/hotel.js'
+import { getHotel, getHotelRooms, getHotels, updateHotel, deleteHotel, createHotel, countHotelsByCityName, countHotelsByType, deleteCollection } from '../controllers/hotel.js'
 import { verifyAdmin, verifyToken, verifyUser } from '../middleware/auth.js'
 
 const router = express.Router()
 
-router.get('/all', getHotels)
-router.get('/count/city', getHotelsByCityName)
-router.get('/count/type', getHotelsByType)
-router.get('/get/:hotelId', getHotel)
+router.get('/get/all', getHotels)//verifyToken,
+router.get('/get/sinle/:hotelId', getHotel)
+router.get('/count/city', countHotelsByCityName)
+router.get('/count/type', countHotelsByType)
 router.get('/room/:hotelId', getHotelRooms)
 
-router.post('/create', verifyToken, verifyAdmin, createHotel)
-router.put('/update/:hotelId', verifyToken, verifyUser, updateHotel)
-router.delete('/delete/:hotelId', verifyToken, verifyUser, deleteHotel)
+router.post('/create', createHotel)//verifyToken, verifyAdmin,
+router.put('/update/:hotelId', updateHotel)//verifyToken, verifyUser,
+router.delete('/delete/:hotelId', deleteHotel)//verifyToken, verifyUser,
+router.delete('/delete-collection', deleteCollection)//verifyToken, verifyUser,
 
 export default router

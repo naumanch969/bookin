@@ -3,8 +3,8 @@ import {
     error,
     end,
     getHotelsReducer,
-    getHotelsByCityNameReducer,
-    getHotelsByTypeReducer,
+    countHotelsByCityNameReducer,
+    countHotelsByTypeReducer,
     getHotelReducer,
     getHotelRoomsReducer,
     createHotelReducer,
@@ -15,82 +15,82 @@ import * as api from '../api/index'
 
 
 export const getHotels = () => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.getHotels()
         dispatch(getHotelsReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
-export const getHotelsByCityName = () => async (dispatch) => {
-    dispatch(start())
+export const countHotelsByCityName = () => async (dispatch) => {
     try {
-        const { data } = await api.getHotelsByCityName()
-        dispatch(getHotelsByCityNameReducer(data.result))
+        dispatch(start())
+        const { data } = await api.countHotelsByCityName()
+        dispatch(countHotelsByCityNameReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
-export const getHotelsByType = () => async (dispatch) => {
-    dispatch(start())
+export const countHotelsByType = () => async (dispatch) => {
     try {
-        const { data } = await api.getHotelsByType()
-        dispatch(getHotelsByTypeReducer(data.result))
+        dispatch(start())
+        const { data } = await api.countHotelsByType()
+        dispatch(countHotelsByTypeReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const getHotel = (hotelId) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.getHotel(hotelId)
         dispatch(getHotelReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const getHotelRooms = (hotelId) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.getHotelRooms(hotelId)
         dispatch(getHotelRoomsReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const createHotel = (hotelData) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.createHotel(hotelData)
         dispatch(createHotelReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const updateHotel = (hotelId, hotelData) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.updateHotel(hotelId, hotelData)
         dispatch(updateHotelReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }
 export const deleteHotel = (hotelId) => async (dispatch) => {
-    dispatch(start())
     try {
+        dispatch(start())
         const { data } = await api.deleteHotel(hotelId)
         dispatch(deleteHotelReducer(data.result))
+        dispatch(end())
     } catch (err) {
         dispatch(error(err.message))
     }
-    dispatch(end())
 }

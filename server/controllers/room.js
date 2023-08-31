@@ -84,7 +84,7 @@ export const deleteRoom = async (req, res, next) => {
 
         const room = await Room.findByIdAndDelete(roomId)
         await Hotel.findByIdAndUpdate(hotelId, { $pull: { rooms: roomId } }, { new: true })
-        res.status(200).json({ success: true, message: 'Room deleted successfully' })
+        res.status(200).json({ result: room, success: true, message: 'Room deleted successfully' })
 
     } catch (err) {
         next(error(err))

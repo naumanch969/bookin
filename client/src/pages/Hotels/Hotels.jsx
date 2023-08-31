@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Header, Navbar } from '../../components'
 import Search from './Search'
 import SearchItem from './SearchItem'
 import { useFetch } from '../../hooks/useFetch'
 import { useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getHotels } from '../../redux/actions/hotel'
 
 
 const List = () => {
 
   const location = useLocation()
+  const dispatch = useDispatch()
 
   const [destination, setDestination] = useState(location.state.destination)
   const [dateRange, setDateRange] = useState(location.state.dateRange)
@@ -16,9 +19,12 @@ const List = () => {
   const [showDate, setShowDate] = useState(false)
   const [min, setMin] = useState(false)
   const [max, setMax] = useState(false)
+  const { hotels, isFetching, error } = useSelector(state => state.hotel)
 
-  const { loading, error, data, reFetch } = useFetch(`/hotel/all?city=${destination}`)
 
+  useEffect(() => {
+    dispatch(getHotels(`city=${destination}`))
+  }, [])
 
 
   return (
@@ -36,13 +42,13 @@ const List = () => {
 
           <div className="flex-[3] ">
             {
-              loading
+              isFetching
                 ?
                 <span>Loading...</span>
                 :
                 <>
                   {
-                    data?.map((item, index) => (
+                    hotels?.map((item, index) => (
                       <SearchItem item={item} key={index} />
                     ))
                   }
